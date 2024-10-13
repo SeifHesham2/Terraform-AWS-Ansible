@@ -1,0 +1,20 @@
+---
+- name: setup webservers and start it
+  become: yes
+  hosts: web_servers
+  tasks:
+    - name: installing apache
+      apt:
+        name: apache2
+        state: present
+
+    - name: start and enable apache service
+      systemd:
+        name: apache2
+        state: started
+        enabled: true
+
+    - name: copy index.html to remote servers
+      template:
+        src: index.html.j2
+        dest: /var/www/html/index.html
